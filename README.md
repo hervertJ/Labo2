@@ -391,13 +391,3 @@ curl -A "sqlmap/1.0" "http://203.0.113.1:8080/?id=1'%20OR%20'1'='1"
 - Durante las pruebas en modo IDS, el sistema generó alertas detalladas en los logs, pero el servidor Nginx continuó respondiendo a cada una de las solicitudes de Nikto y cURL. En un entorno de producción, un IDS pasivo únicamente notifica el incidente a posteriori; sin intervención manual o una transición a IPS (Inline / Block Offenders), el atacante continúa recopilando información y explotando vulnerabilidades sin fricción. La transición a IPS con Block Offenders convirtió la defensa en una acción proactiva, Suricata coordinó dinámicamente con pf para registrar la IP hostil (203.0.113.10) en tablas de descarte temporal, cortando sesiones TCP y forzando timeouts en herramientas automatizadas. No obstante, el bloqueo por IP en modo Legacy conlleva el riesgo de generar falsos positivos que afecten a usuarios legítimos. Por ello, su viabilidad en producción exige un afinamiento riguroso de firmas y el uso estricto de Pass Lists para proteger la operatividad y la administración.
 
 - La limitación a categorías esenciales de ET Open (`scan`, `web_server`, etc.) y el diseño de la regla personalizada para escaneo SYN demostraron que es viable obtener alta visibilidad de amenazas sin agotar la memoria RAM (1 GB en QEMU) ni degradar el enrutamiento. Además, la creación previa de la Pass List resulta crítica antes de activar el bloqueo preventivo, asegurando que un análisis de reconocimiento no aísle la administración legítima.
-
-## Notas
-
-pfSense bloquea por defecto los paquetes ICMP de la red WAN
-
-Empezar con:
-
-![](attachments/Pasted%20image%2020261003004500.png)
-
-por default se configurar WAN y LAN como DHCP y server DHCP.
